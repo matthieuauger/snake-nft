@@ -1,0 +1,15 @@
+{
+  "attributes": [
+    {
+      "trait_type": "Email",
+      "value": "matthieua@theodo.fr"
+    },
+    {
+      "trait_type": "Tribe",
+      "value": "Lyon"
+    }
+  ],
+  "description": "The first Theodo NFT.",
+  "image": "https://gateway.pinata.cloud/ipfs/QmdCz6X4McpSJAdBJ8xe7jdiVe6CU9N6cRzqPFooTZ1K2h",
+  "name": "Theodo NFT"
+}
