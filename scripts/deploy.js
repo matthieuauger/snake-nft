@@ -1,10 +1,10 @@
 async function main() {
-  const TheodoNFT = await ethers.getContractFactory("TheodoNFT")
+  const SnakeNFT = await ethers.getContractFactory("SnakeNFT")
 
   // Start deployment, returning a promise that resolves to a contract object
-  const theodoNFT = await TheodoNFT.deploy()
-  await theodoNFT.deployed()
-  console.log("Contract deployed to address:", theodoNFT.address)
+  const snakeNFT = await SnakeNFT.deploy()
+  await snakeNFT.deployed()
+  console.log("Contract deployed to address:", snakeNFT.address)
 }
 
 main()

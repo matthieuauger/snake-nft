@@ -6,7 +6,7 @@ const PRIVATE_KEY = process.env.PRIVATE_KEY
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3")
 const web3 = createAlchemyWeb3(API_URL)
 
-const contract = require("../artifacts/contracts/TheodoNFT.sol/TheodoNFT.json")
+const contract = require("../artifacts/contracts/SnakeNFT.sol/SnakeNFT.json")
 const contractAddress = "0x6879Fb6B053411e635d23D052140094064EEDeEB";
 const nftContract = new web3.eth.Contract(contract.abi, contractAddress)
 
