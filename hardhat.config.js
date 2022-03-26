@@ -7,10 +7,10 @@ require("@nomiclabs/hardhat-etherscan");
 const { API_URL, PRIVATE_KEY, ETHERSCAN_KEY } = process.env;
 module.exports = {
    solidity: "0.8.1",
-   defaultNetwork: "ropsten",
+   defaultNetwork: "goerli",
    networks: {
       hardhat: {},
-      ropsten: {
+      goerli: {
          url: API_URL,
          accounts: [`0x${PRIVATE_KEY}`]
       }
