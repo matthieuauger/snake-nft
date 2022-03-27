@@ -11,8 +11,8 @@ contract SnakeNFT is ERC721, Ownable {
     Counters.Counter private _tokenIdCounter;
     string internal baseTokenURI;
 
-    constructor() ERC721("SnakeNFT", "SNAKE") {
-        baseTokenURI = "YOUR_API_URL/api/erc721/";
+    constructor(string memory _baseTokenURI) ERC721("SnakeNFT", "SNAKE") {
+        baseTokenURI = _baseTokenURI;
     }
 
     function _baseURI() internal view override returns (string memory) {

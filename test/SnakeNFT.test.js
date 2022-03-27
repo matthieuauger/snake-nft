@@ -3,7 +3,7 @@ const { expect } = require("chai");
 describe("Snake contract", function () {
   it("Deployment should name contract SnakeNFT", async function () {
     const Token = await ethers.getContractFactory("SnakeNFT");
-    const hardhatToken = await Token.deploy();
+    const hardhatToken = await Token.deploy("YOUR_API_URL/api/erc721/");
 
     expect(await hardhatToken.name()).to.equal("SnakeNFT");
   });
@@ -12,7 +12,7 @@ describe("Snake contract", function () {
     const [owner] = await ethers.getSigners();
 
     const Token = await ethers.getContractFactory("SnakeNFT");
-    const hardhatToken = await Token.deploy();
+    const hardhatToken = await Token.deploy("YOUR_API_URL/api/erc721/");
 
     expect(await hardhatToken.balanceOf(owner.address)).to.equal(0);
 
@@ -27,7 +27,7 @@ describe("Snake contract", function () {
     const [owner] = await ethers.getSigners();
 
     const Token = await ethers.getContractFactory("SnakeNFT");
-    const hardhatToken = await Token.deploy();
+    const hardhatToken = await Token.deploy("YOUR_API_URL/api/erc721/");
 
     await hardhatToken.mint(owner.address);
     expect(await hardhatToken.tokenURI(1)).to.equal("YOUR_API_URL/api/erc721/1");
@@ -40,7 +40,7 @@ describe("Snake contract", function () {
     const [, maliciousUser] = await ethers.getSigners();
 
     const Token = await ethers.getContractFactory("SnakeNFT");
-    const hardhatToken = await Token.deploy();
+    const hardhatToken = await Token.deploy("YOUR_API_URL/api/erc721/");
 
     const maliciousUserToken = await hardhatToken.connect(maliciousUser);
 
