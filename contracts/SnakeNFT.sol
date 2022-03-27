@@ -19,8 +19,8 @@ contract SnakeNFT is ERC721, Ownable {
         return baseTokenURI;
     }
 
-    function setBaseTokenURI(string memory uri_) external onlyOwner {
-        baseTokenURI = uri_;
+    function setBaseTokenURI(string memory _baseTokenURI) external onlyOwner {
+        baseTokenURI = _baseTokenURI;
     }
 
     function mint(address to)
