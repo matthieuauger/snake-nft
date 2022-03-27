@@ -6,11 +6,12 @@ import "@typechain/hardhat";
 import "@nomiclabs/hardhat-ethers";
 import "@nomiclabs/hardhat-etherscan";
 import "@nomiclabs/hardhat-waffle";
+import { HardhatUserConfig } from "hardhat/config";
 
 dotenv.config();
 const { API_URL, PRIVATE_KEY, ETHERSCAN_KEY } = process.env;
 
-export default {
+const config: HardhatUserConfig = {
    solidity: "0.8.1",
    defaultNetwork: "goerli",
    networks: {
@@ -27,3 +28,4 @@ export default {
     }
  };
  
+ export default config;
