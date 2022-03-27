@@ -35,4 +35,19 @@ describe("Snake contract", function () {
     await hardhatToken.setBaseTokenURI("YOUR_API_URL_2/api/erc721/");
     expect(await hardhatToken.tokenURI(1)).to.equal("YOUR_API_URL_2/api/erc721/1");
   });
+  
+  it("Only Owner can change baseURI", async function () {
+    const [, maliciousUser] = await ethers.getSigners();
+
+    const Token = await ethers.getContractFactory("SnakeNFT");
+    const hardhatToken = await Token.deploy();
+
+    const maliciousUserToken = await hardhatToken.connect(maliciousUser);
+
+    await maliciousUserToken.mint(maliciousUser.address);
+    expect(await maliciousUserToken.tokenURI(1)).to.equal("YOUR_API_URL/api/erc721/1");
+
+    await expect(maliciousUserToken.setBaseTokenURI("YOUR_API_URL_2/api/erc721/"))
+        .to.be.revertedWith('Ownable: caller is not the owner');
+  });
 });
