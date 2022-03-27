@@ -1,20 +1,20 @@
 const { expect } = require("chai");
 
 describe("Snake contract", function () {
-  async function getToken() {
+  async function getToken(totalSupply) {
     const Token = await ethers.getContractFactory("SnakeNFT");
-    return await Token.deploy("YOUR_API_URL/api/erc721/");
+    return await Token.deploy("YOUR_API_URL/api/erc721/", totalSupply);
   }
 
   it("Deployment should name contract SnakeNFT", async function () {
-    const snakeToken = await getToken();
+    const snakeToken = await getToken(10);
     expect(await snakeToken.name()).to.equal("SnakeNFT");
   });
   
   it("Minting should assign 1 nft to minter", async function () {
     const [owner] = await ethers.getSigners();
 
-    const snakeToken = await getToken();
+    const snakeToken = await getToken(10);
     expect(await snakeToken.balanceOf(owner.address)).to.equal(0);
 
     await snakeToken.mint(owner.address);
@@ -27,7 +27,7 @@ describe("Snake contract", function () {
   it("Owner can change baseURI", async function () {
     const [owner] = await ethers.getSigners();
 
-    const snakeToken = await getToken();
+    const snakeToken = await getToken(10);
     await snakeToken.mint(owner.address);
     expect(await snakeToken.tokenURI(1)).to.equal("YOUR_API_URL/api/erc721/1");
 
@@ -38,7 +38,7 @@ describe("Snake contract", function () {
   it("Only Owner can change baseURI", async function () {
     const [, maliciousUser] = await ethers.getSigners();
 
-    const snakeToken = await getToken();
+    const snakeToken = await getToken(10);
     const maliciousUserToken = await snakeToken.connect(maliciousUser);
 
     await maliciousUserToken.mint(maliciousUser.address);
@@ -46,5 +46,17 @@ describe("Snake contract", function () {
 
     await expect(maliciousUserToken.setBaseTokenURI("YOUR_API_URL_2/api/erc721/"))
         .to.be.revertedWith('Ownable: caller is not the owner');
+  });
+
+  it("Can't mint more than supply", async function () {
+    const [owner] = await ethers.getSigners();
+
+    const snakeToken = await getToken(3);
+    await snakeToken.mint(owner.address);
+    await snakeToken.mint(owner.address);
+    await snakeToken.mint(owner.address);
+    
+    await expect(snakeToken.mint(owner.address))
+        .to.be.revertedWith("Total supply exceeded, no more available tokens");
   });
 });

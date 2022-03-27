@@ -9,10 +9,15 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract SnakeNFT is ERC721, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
+
     string internal baseTokenURI;
 
-    constructor(string memory _baseTokenURI) ERC721("SnakeNFT", "SNAKE") {
+    uint public totalSupply;
+    uint public totalMinted = 0;
+
+    constructor(string memory _baseTokenURI, uint _totalSupply) ERC721("SnakeNFT", "SNAKE") {
         baseTokenURI = _baseTokenURI;
+        totalSupply = _totalSupply;
     }
 
     function _baseURI() internal view override returns (string memory) {
@@ -26,9 +31,11 @@ contract SnakeNFT is ERC721, Ownable {
     function mint(address to)
         public returns (uint256)
     {
-        require(_tokenIdCounter.current() < 3);
+        require(totalMinted < totalSupply, "Total supply exceeded, no more available tokens");
+        
         _tokenIdCounter.increment();
         _safeMint(to, _tokenIdCounter.current());
+        totalMinted++;
 
         return _tokenIdCounter.current();
     }
