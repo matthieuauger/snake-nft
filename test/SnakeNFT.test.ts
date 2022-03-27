@@ -2,20 +2,24 @@ import { expect } from "chai";
 import { ethers } from "hardhat";
 
 describe("Snake contract", function () {
-  async function deployAndGetToken(totalSupply: number) {
+  type contractConfiguration = {
+    totalSupply: number;
+  }
+
+  async function deployAndGetToken(config: contractConfiguration) {
     const Token = await ethers.getContractFactory("SnakeNFT");
-    return await Token.deploy("YOUR_API_URL/api/erc721/", totalSupply);
+    return await Token.deploy("YOUR_API_URL/api/erc721/", config.totalSupply);
   }
 
   it("Deployment should name contract SnakeNFT", async function () {
-    const snakeToken = await deployAndGetToken(10);
+    const snakeToken = await deployAndGetToken({totalSupply: 10});
     expect(await snakeToken.name()).to.equal("SnakeNFT");
   });
   
   it("Minting should assign 1 nft to minter", async function () {
     const [owner] = await ethers.getSigners();
 
-    const snakeToken = await deployAndGetToken(10);
+    const snakeToken = await deployAndGetToken({totalSupply: 10});
     expect(await snakeToken.balanceOf(owner.address)).to.equal(0);
 
     await snakeToken.mint(owner.address);
@@ -28,7 +32,7 @@ describe("Snake contract", function () {
   it("Owner can change baseURI", async function () {
     const [owner] = await ethers.getSigners();
 
-    const snakeToken = await deployAndGetToken(10);
+    const snakeToken = await deployAndGetToken({totalSupply: 10});
     await snakeToken.mint(owner.address);
     expect(await snakeToken.tokenURI(1)).to.equal("YOUR_API_URL/api/erc721/1");
 
@@ -39,7 +43,7 @@ describe("Snake contract", function () {
   it("Only Owner can change baseURI", async function () {
     const [, maliciousUser] = await ethers.getSigners();
 
-    const snakeToken = await deployAndGetToken(10);
+    const snakeToken = await deployAndGetToken({totalSupply: 10});
     const maliciousUserToken = await snakeToken.connect(maliciousUser);
 
     await maliciousUserToken.mint(maliciousUser.address);
@@ -52,19 +56,7 @@ describe("Snake contract", function () {
   it("Can't mint more than supply", async function () {
     const [owner] = await ethers.getSigners();
 
-    const snakeToken = await deployAndGetToken(3);
-    await snakeToken.mint(owner.address);
-    await snakeToken.mint(owner.address);
-    await snakeToken.mint(owner.address);
-    
-    await expect(snakeToken.mint(owner.address))
-        .to.be.revertedWith("Total supply exceeded, no more available tokens");
-  });  
-  
-  it("Owner can withdraw ether", async function () {
-    const [owner] = await ethers.getSigners();
-
-    const snakeToken = await deployAndGetToken(3);
+    const snakeToken = await deployAndGetToken({totalSupply: 3});
     await snakeToken.mint(owner.address);
     await snakeToken.mint(owner.address);
     await snakeToken.mint(owner.address);
