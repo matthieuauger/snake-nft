@@ -1,7 +1,8 @@
-const { expect } = require("chai");
+import { expect } from "chai";
+import { ethers } from "hardhat";
 
 describe("Snake contract", function () {
-  async function getToken(totalSupply) {
+  async function getToken(totalSupply: number) {
     const Token = await ethers.getContractFactory("SnakeNFT");
     return await Token.deploy("YOUR_API_URL/api/erc721/", totalSupply);
   }
