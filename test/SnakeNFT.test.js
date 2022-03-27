@@ -15,5 +15,16 @@ describe("Snake contract", function () {
     const hardhatToken = await Token.deploy();
 
     expect(await hardhatToken.balanceOf(owner.address)).to.equal(0);
+  });  
+  
+  it("Minting should assign 1 nft to minter", async function () {
+    const [owner] = await ethers.getSigners();
+
+    const Token = await ethers.getContractFactory("SnakeNFT");
+    const hardhatToken = await Token.deploy();
+
+    await hardhatToken.mint(owner.address);
+
+    expect(await hardhatToken.balanceOf(owner.address)).to.equal(1);
   });
 });
