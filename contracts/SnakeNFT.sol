@@ -8,11 +8,18 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 contract SnakeNFT is ERC721 {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
+    string internal baseTokenURI;
 
-    constructor() ERC721("SnakeNFT", "SNAKE") {}
+    constructor() ERC721("SnakeNFT", "SNAKE") {
+        baseTokenURI = "YOUR_API_URL/api/erc721/";
+    }
 
-    function _baseURI() internal pure override returns (string memory) {
-        return "YOUR_API_URL/api/erc721/";
+    function _baseURI() internal view override returns (string memory) {
+        return baseTokenURI;
+    }
+
+    function setBaseTokenURI(string memory uri_) external {
+        baseTokenURI = uri_;
     }
 
     function mint(address to)
