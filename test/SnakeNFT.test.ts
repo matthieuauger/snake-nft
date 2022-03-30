@@ -7,8 +7,8 @@ describe("Snake contract", function () {
   }
 
   async function deployAndGetToken(config: contractConfiguration) {
-    const Token = await ethers.getContractFactory("SnakeNFT");
-    return await Token.deploy("YOUR_API_URL/api/erc721/", config.totalSupply);
+    const snakeToken = await ethers.getContractFactory("SnakeNFT");
+    return await snakeToken.deploy("YOUR_API_URL/api/erc721/", config.totalSupply);
   }
 
   it("Deployment should name contract SnakeNFT", async function () {
