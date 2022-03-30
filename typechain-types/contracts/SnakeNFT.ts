@@ -50,6 +50,7 @@ export interface SnakeNFTInterface extends utils.Interface {
     "totalSupply()": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
+    "unpause()": FunctionFragment;
   };
 
   getFunction(
@@ -76,6 +77,7 @@ export interface SnakeNFTInterface extends utils.Interface {
       | "totalSupply"
       | "transferFrom"
       | "transferOwnership"
+      | "unpause"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -145,6 +147,7 @@ export interface SnakeNFTInterface extends utils.Interface {
     functionFragment: "transferOwnership",
     values: [string]
   ): string;
+  encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
@@ -204,6 +207,7 @@ export interface SnakeNFTInterface extends utils.Interface {
     functionFragment: "transferOwnership",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
 
   events: {
     "Approval(address,address,uint256)": EventFragment;
@@ -407,6 +411,10 @@ export interface SnakeNFT extends BaseContract {
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    unpause(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
   };
 
   approve(
@@ -500,6 +508,10 @@ export interface SnakeNFT extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  unpause(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     approve(
       to: string,
@@ -584,6 +596,8 @@ export interface SnakeNFT extends BaseContract {
       newOwner: string,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    unpause(overrides?: CallOverrides): Promise<void>;
   };
 
   filters: {
@@ -733,6 +747,10 @@ export interface SnakeNFT extends BaseContract {
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    unpause(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -833,6 +851,10 @@ export interface SnakeNFT extends BaseContract {
 
     transferOwnership(
       newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    unpause(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };

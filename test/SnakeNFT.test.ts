@@ -73,6 +73,29 @@ describe("Snake contract", function () {
     await snakeToken.pause();
     
     await expect(snakeToken.mint(owner.address))
-        .to.be.revertedWith("Pausable: paused");
+        .to.be.revertedWith("Pausable: paused");      
+  });  
+  
+  it("Owner can unpause contract", async function () {
+    const [owner] = await ethers.getSigners();
+
+    const snakeToken = await deployAndGetToken({totalSupply: 3});
+    await snakeToken.pause();
+    await snakeToken.unpause();  
+    await expect(snakeToken.mint(owner.address))
+        .to.not.be.reverted;
+  });
+
+  it("Only Owner can pause and unpause contract", async function () {
+    const [, maliciousUser] = await ethers.getSigners();
+
+    const snakeToken = await deployAndGetToken({totalSupply: 10});
+    const maliciousUserToken = await snakeToken.connect(maliciousUser);
+
+    await expect(maliciousUserToken.pause())
+        .to.be.revertedWith('Ownable: caller is not the owner');
+    
+    await expect(maliciousUserToken.unpause())
+        .to.be.revertedWith('Ownable: caller is not the owner');
   });
 });

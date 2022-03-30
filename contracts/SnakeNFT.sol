@@ -32,6 +32,10 @@ contract SnakeNFT is ERC721, Ownable, Pausable {
     function pause() external onlyOwner {
         _pause();
     }
+    
+    function unpause() external onlyOwner {
+        _unpause();
+    }
 
     function mint(address to) public whenNotPaused returns (uint256)
     {
