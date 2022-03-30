@@ -2,7 +2,6 @@ import { ethers } from "hardhat";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-
 async function main() {
   const { BASE_TOKEN_URI, TOTAL_SUPPLY } = process.env;
 

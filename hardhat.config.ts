@@ -6,11 +6,12 @@ import "@typechain/hardhat";
 import "@nomiclabs/hardhat-ethers";
 import "@nomiclabs/hardhat-etherscan";
 import "@nomiclabs/hardhat-waffle";
-import "hardhat-gas-reporter"
+import "hardhat-gas-reporter";
+import "./tasks/mint-nft";
 import { HardhatUserConfig } from "hardhat/config";
 
 dotenv.config();
-const { STAGING_API_URL, STAGING_PRIVATE_KEY, STAGING_ETHERSCAN_KEY } = process.env;
+const { STAGING_API_URL, STAGING_PRIVATE_KEY, ETHERSCAN_KEY } = process.env;
 
 const config: HardhatUserConfig = {
    solidity: "0.8.1",
@@ -25,7 +26,7 @@ const config: HardhatUserConfig = {
    etherscan: {
       // Your API key for Etherscan
       // Obtain one at https://etherscan.io/
-      apiKey: STAGING_ETHERSCAN_KEY
+      apiKey: ETHERSCAN_KEY
     }
  };
  
