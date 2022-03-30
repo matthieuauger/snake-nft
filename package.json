@@ -4,7 +4,9 @@
   "description": "Theodo NFT",
   "main": "index.js",
   "scripts": {
-    "test": "npx hardhat test --network hardhat"
+    "test": "npx hardhat test --network hardhat",
+    "local-blockchain": "npx hardhat node",
+    "local-deploy": "npx hardhat run --network localhost scripts/deploy.js"
   },
   "author": "",
   "license": "ISC",
