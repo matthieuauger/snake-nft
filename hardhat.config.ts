@@ -14,7 +14,7 @@ const { STAGING_API_URL, STAGING_PRIVATE_KEY, STAGING_ETHERSCAN_KEY } = process.
 
 const config: HardhatUserConfig = {
    solidity: "0.8.1",
-   defaultNetwork: "goerli",
+   defaultNetwork: "hardhat",
    networks: {
       hardhat: {},
       goerli: {
