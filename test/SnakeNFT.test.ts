@@ -64,4 +64,15 @@ describe("Snake contract", function () {
     await expect(snakeToken.mint(owner.address))
         .to.be.revertedWith("Total supply exceeded, no more available tokens");
   });
+
+  it("Owner can pause contract", async function () {
+    const [owner] = await ethers.getSigners();
+
+    const snakeToken = await deployAndGetToken({totalSupply: 3});
+    await snakeToken.mint(owner.address);
+    await snakeToken.pause();
+    
+    await expect(snakeToken.mint(owner.address))
+        .to.be.revertedWith("Pausable: paused");
+  });
 });
