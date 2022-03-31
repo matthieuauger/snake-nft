@@ -17,9 +17,9 @@ describe("Snake contract", function () {
   });
   
   it("Minting should assign 1 nft to minter", async function () {
-    const [owner] = await ethers.getSigners();
-
     const snakeToken = await deployAndGetToken({totalSupply: 10});
+    
+    const [owner] = await ethers.getSigners();
     expect(await snakeToken.balanceOf(owner.address)).to.equal(0);
 
     await snakeToken.mint(owner.address);
@@ -29,10 +29,10 @@ describe("Snake contract", function () {
     expect(await snakeToken.tokenURI(1)).to.equal("YOUR_API_URL/api/erc721/1");
   });  
   
-  it("Owner can change baseURI", async function () {
-    const [owner] = await ethers.getSigners();
-
+  it("Owner can change baseURI", async function () {    
     const snakeToken = await deployAndGetToken({totalSupply: 10});
+    
+    const [owner] = await ethers.getSigners();
     await snakeToken.mint(owner.address);
     expect(await snakeToken.tokenURI(1)).to.equal("YOUR_API_URL/api/erc721/1");
 
@@ -41,9 +41,9 @@ describe("Snake contract", function () {
   });
   
   it("Only Owner can change baseURI", async function () {
-    const [, maliciousUser] = await ethers.getSigners();
-
     const snakeToken = await deployAndGetToken({totalSupply: 10});
+    
+    const [, maliciousUser] = await ethers.getSigners();
     const maliciousUserToken = await snakeToken.connect(maliciousUser);
 
     await maliciousUserToken.mint(maliciousUser.address);
@@ -54,9 +54,9 @@ describe("Snake contract", function () {
   });
 
   it("Can't mint more than supply", async function () {
-    const [owner] = await ethers.getSigners();
-
     const snakeToken = await deployAndGetToken({totalSupply: 3});
+    
+    const [owner] = await ethers.getSigners();
     await snakeToken.mint(owner.address);
     await snakeToken.mint(owner.address);
     await snakeToken.mint(owner.address);
@@ -66,9 +66,9 @@ describe("Snake contract", function () {
   });
 
   it("Owner can pause contract", async function () {
-    const [owner] = await ethers.getSigners();
-
     const snakeToken = await deployAndGetToken({totalSupply: 3});
+    
+    const [owner] = await ethers.getSigners();
     await snakeToken.mint(owner.address);
     await snakeToken.pause();
     
@@ -77,9 +77,9 @@ describe("Snake contract", function () {
   });  
   
   it("Owner can unpause contract", async function () {
-    const [owner] = await ethers.getSigners();
-
     const snakeToken = await deployAndGetToken({totalSupply: 3});
+    
+    const [owner] = await ethers.getSigners();
     await snakeToken.pause();
     await snakeToken.unpause();  
     await expect(snakeToken.mint(owner.address))
@@ -87,9 +87,9 @@ describe("Snake contract", function () {
   });
 
   it("Only Owner can pause and unpause contract", async function () {
-    const [, maliciousUser] = await ethers.getSigners();
-
     const snakeToken = await deployAndGetToken({totalSupply: 10});
+    
+    const [, maliciousUser] = await ethers.getSigners();
     const maliciousUserToken = await snakeToken.connect(maliciousUser);
 
     await expect(maliciousUserToken.pause())
