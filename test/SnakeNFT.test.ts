@@ -8,6 +8,16 @@ describe("Snake contract should allow users to mint ERC721 and owner to administ
   let owner: SignerWithAddress;
   let normalUser: SignerWithAddress;
 
+  /**
+   * All the tests begin by the creation and deployment of the contract
+   * 2 users are accessible for the tests:
+   *     - The owner, who deployed the contract and should have access to administration features
+   *     - A normal user, who will mint NFT and access public functions that don't require administration
+   * 
+   * For the tests, we create a contract with two parameters:
+   *     - The baseURL that will be used for all NFT metadata
+   *     - The total supply that should not be exceeded when minting some NFTs
+   */
   beforeEach(async () => {
     const SnakeNFTFactory = await ethers.getContractFactory("SnakeNFT");
     [owner, normalUser] = await ethers.getSigners();
