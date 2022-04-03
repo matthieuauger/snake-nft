@@ -73,7 +73,7 @@ describe("Snake contract should allow users to mint ERC721 and owner to administ
     await snakeNFTContract.pause();
     
     await expect(snakeNFTContract.mint(owner.address))
-        .to.be.revertedWith("Pausable: paused");      
+        .to.be.revertedWith("ERC721Pausable: token transfer while paused");      
   });  
   
   it("Owner can unpause contract", async function () {

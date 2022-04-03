@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 
-contract SnakeNFT is ERC721, Ownable, Pausable {
+contract SnakeNFT is ERC721Pausable, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
 
@@ -37,7 +37,7 @@ contract SnakeNFT is ERC721, Ownable, Pausable {
         _unpause();
     }
 
-    function mint(address to) public whenNotPaused returns (uint256)
+    function mint(address to) public returns (uint256)
     {
         require(totalMinted < totalSupply, "Total supply exceeded, no more available tokens");
         
