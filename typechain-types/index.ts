@@ -12,6 +12,8 @@ export type { Pausable } from "./@openzeppelin/contracts/security/Pausable";
 export { Pausable__factory } from "./factories/@openzeppelin/contracts/security/Pausable__factory";
 export type { ERC721 } from "./@openzeppelin/contracts/token/ERC721/ERC721";
 export { ERC721__factory } from "./factories/@openzeppelin/contracts/token/ERC721/ERC721__factory";
+export type { ERC721Burnable } from "./@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable";
+export { ERC721Burnable__factory } from "./factories/@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable__factory";
 export type { ERC721Pausable } from "./@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable";
 export { ERC721Pausable__factory } from "./factories/@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable__factory";
 export type { IERC721Metadata } from "./@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata";

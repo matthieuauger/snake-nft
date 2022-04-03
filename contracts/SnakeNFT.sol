@@ -3,11 +3,12 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 
-contract SnakeNFT is ERC721Pausable, Ownable {
+contract SnakeNFT is ERC721Pausable, ERC721Burnable, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
 
@@ -35,6 +36,14 @@ contract SnakeNFT is ERC721Pausable, Ownable {
     
     function unpause() external onlyOwner {
         _unpause();
+    }
+
+    function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256 tokenId
+    ) internal virtual override(ERC721, ERC721Pausable) {
+        super._beforeTokenTransfer(from, to, tokenId);
     }
 
     function mint(address to) public returns (uint256)

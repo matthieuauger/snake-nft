@@ -93,4 +93,26 @@ describe("Snake contract should allow users to mint ERC721 and owner to administ
     await expect(snakeNFTContract.unpause())
         .to.be.revertedWith('Ownable: caller is not the owner');
   });
+
+  it("User can burn its token", async function () {
+    await snakeNFTContract.mint(owner.address);
+
+    expect(await snakeNFTContract.balanceOf(owner.address)).to.equal(1);
+    expect(await snakeNFTContract.ownerOf(1)).to.equal(owner.address);
+
+    await snakeNFTContract.burn(1);
+
+    expect(await snakeNFTContract.balanceOf(owner.address)).to.equal(0);
+  });
+
+  it("Only owner can burn its token", async function () {
+    snakeNFTContract.connect(normalUser);
+    await snakeNFTContract.mint(normalUser.address);
+
+    const [,,anotherUser] = await ethers.getSigners();
+    snakeNFTContract.connect(anotherUser);
+    
+    await expect(snakeNFTContract.burn(1))
+    .to.be.revertedWith('ERC721Burnable: caller is not owner nor approved');
+  });
 });
