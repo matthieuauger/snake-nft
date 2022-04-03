@@ -18,7 +18,7 @@ const config: HardhatUserConfig = {
    defaultNetwork: "hardhat",
    networks: {
       hardhat: {},
-      goerli: {
+      rinkeby: {
          url: STAGING_API_URL,
          accounts: [`0x${STAGING_PRIVATE_KEY}`]
       }
