@@ -56,7 +56,7 @@ describe("Snake contract should allow users to mint ERC721 and owner to administ
     expect(await snakeNFTContract.tokenURI(1)).to.equal("YOUR_API_URL/api/erc721/1");
 
     await expect(snakeNFTContract.setBaseTokenURI("YOUR_API_URL_2/api/erc721/"))
-        .to.be.revertedWith('Ownable: caller is not the owner');
+        .to.be.revertedWith('setBaseTokenURI: must have admin role to set base token URI');
   });
 
   it("Can't mint more than supply", async function () {
@@ -88,10 +88,10 @@ describe("Snake contract should allow users to mint ERC721 and owner to administ
     snakeNFTContract = snakeNFTContract.connect(normalUser);
 
     await expect(snakeNFTContract.pause())
-        .to.be.revertedWith('Ownable: caller is not the owner');
+        .to.be.revertedWith('Pause: must have pauser role to pause');
     
     await expect(snakeNFTContract.unpause())
-        .to.be.revertedWith('Ownable: caller is not the owner');
+        .to.be.revertedWith('Unpause: must have pauser role to unpause');
   });
 
   it("User can burn its token", async function () {
@@ -103,6 +103,15 @@ describe("Snake contract should allow users to mint ERC721 and owner to administ
     await snakeNFTContract.burn(1);
 
     expect(await snakeNFTContract.balanceOf(owner.address)).to.equal(0);
+  });
+
+  it("Only owner can burn its token", async function () {
+    await snakeNFTContract.mint(owner.address);
+
+    snakeNFTContract = snakeNFTContract.connect(normalUser);
+    
+    await expect(snakeNFTContract.burn(1))
+    .to.be.revertedWith('ERC721Burnable: caller is not owner nor approved');
   });
 
   it("Only owner can burn its token", async function () {

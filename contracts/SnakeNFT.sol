@@ -2,39 +2,55 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/security/Pausable.sol";
 
-contract SnakeNFT is ERC721, ERC721Pausable, ERC721Burnable, Ownable {
+contract SnakeNFT is 
+    Context,
+    AccessControlEnumerable,
+    ERC721Enumerable,
+    ERC721Burnable,
+    ERC721Pausable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
 
-    string internal baseTokenURI;
+    string internal _baseTokenURI;
 
-    uint public totalSupply;
-    uint public totalMinted = 0;
+    uint public _totalSupply;
+    uint public _totalMinted = 0;
 
-    constructor(string memory _baseTokenURI, uint _totalSupply) ERC721("SnakeNFT", "SNAKE") {
-        baseTokenURI = _baseTokenURI;
-        totalSupply = _totalSupply;
+    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+
+    constructor(string memory baseTokenURI, uint totalSupply) ERC721("SnakeNFT", "SNAKE") {
+        _baseTokenURI = baseTokenURI;
+        _totalSupply = totalSupply;
+
+        _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
+
+        _setupRole(PAUSER_ROLE, _msgSender());
     }
 
     function _baseURI() internal view override returns (string memory) {
-        return baseTokenURI;
+        return _baseTokenURI;
     }
 
-    function setBaseTokenURI(string memory _baseTokenURI) external onlyOwner {
-        baseTokenURI = _baseTokenURI;
+    function setBaseTokenURI(string memory baseTokenURI) external {
+        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "setBaseTokenURI: must have admin role to set base token URI");
+
+        _baseTokenURI = baseTokenURI;
     }
 
-    function pause() external onlyOwner {
+    function pause() external {
+        require(hasRole(PAUSER_ROLE, _msgSender()), "Pause: must have pauser role to pause");
         _pause();
     }
     
-    function unpause() external onlyOwner {
+    function unpause() external {
+        require(hasRole(PAUSER_ROLE, _msgSender()), "Unpause: must have pauser role to unpause");
         _unpause();
     }
 
@@ -42,18 +58,31 @@ contract SnakeNFT is ERC721, ERC721Pausable, ERC721Burnable, Ownable {
         address from,
         address to,
         uint256 tokenId
-    ) internal virtual override(ERC721, ERC721Pausable) {
+    ) internal virtual override(ERC721, ERC721Enumerable, ERC721Pausable) {
         super._beforeTokenTransfer(from, to, tokenId);
     }
 
     function mint(address to) public returns (uint256)
     {
-        require(totalMinted < totalSupply, "Total supply exceeded, no more available tokens");
+        require(_totalMinted < _totalSupply, "Total supply exceeded, no more available tokens");
         
         _tokenIdCounter.increment();
         _mint(to, _tokenIdCounter.current());
-        totalMinted++;
+        _totalMinted++;
 
         return _tokenIdCounter.current();
+    }
+
+    /**
+     * @dev See {IERC165-supportsInterface}.
+     */
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        virtual
+        override(AccessControlEnumerable, ERC721, ERC721Enumerable)
+        returns (bool)
+    {
+        return super.supportsInterface(interfaceId);
     }
 }
