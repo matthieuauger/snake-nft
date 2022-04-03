@@ -51,7 +51,7 @@ contract SnakeNFT is ERC721, ERC721Pausable, ERC721Burnable, Ownable {
         require(totalMinted < totalSupply, "Total supply exceeded, no more available tokens");
         
         _tokenIdCounter.increment();
-        _safeMint(to, _tokenIdCounter.current());
+        _mint(to, _tokenIdCounter.current());
         totalMinted++;
 
         return _tokenIdCounter.current();
